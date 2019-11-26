@@ -6,6 +6,7 @@
 package trabalhocomplexidade_resta1;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
@@ -45,7 +46,6 @@ public class Painel extends javax.swing.JFrame {
 
     }// ------------FIM PAINEL -----------
 
-    
     /**
      * Método para mostrat matriz
      */
@@ -58,7 +58,8 @@ public class Painel extends javax.swing.JFrame {
             System.out.println();
         }
     }
-/**
+
+    /**
      *
      * @return Retorna a quantidades de Zeros que tem na Matriz
      */
@@ -73,6 +74,7 @@ public class Painel extends javax.swing.JFrame {
         }
         return qtd;
     }
+
     /**
      *
      * @return Retorna a quantidades de 1 que tem na Matriz
@@ -88,16 +90,46 @@ public class Painel extends javax.swing.JFrame {
         }
         return qtd;
     }
+
     public void Joga_Peca_Manual(int X_Atual, int Y_Atual, int X_Meio, int Y_Meio, int X_Novo, int Y_Novo) {
-        System.out.println("Quantidade de peças: "+ this.QuantidadeDePeças(tabuleiro, TamY, TamX));
+        System.out.println("Quantidade de peças: " + this.QuantidadeDePeças(tabuleiro, TamY, TamX));
         //System.out.println("O que realmente jogou = Atual="+X_Atual+","+Y_Atual+" o Meio = "+X_Meio+","+Y_Meio+""+ " e o Novo ="+X_Novo+","+Y_Novo);
-        tabuleiro[X_Atual][Y_Atual]  = 0;
-        tabuleiro[X_Meio] [Y_Meio]   = 0;
-        tabuleiro[X_Novo] [Y_Novo]   = 1;
-        
+        tabuleiro[X_Atual][Y_Atual] = 0;
+        tabuleiro[X_Meio][Y_Meio] = 0;
+        tabuleiro[X_Novo][Y_Novo] = 1;
+
     }
 
-    public String verifica_Possibilidade_Manual(int[][] Tabuleiro, int posX, int posY) {
+    /**
+     *
+     * @return Retorna a quantidades de 1 que tem na Matriz
+     */
+    public boolean Verifica_se_terminou(int[][] Tabuleiro, int TamY, int TamX) {
+       // Esse método está muito lento!!!
+        
+        /*int qtd_pecas = this.QuantidadeDePeças(Tabuleiro, TamY, TamX);
+
+        for (int y = 0; y < TamY; y++) {
+            for (int x = 0; x < TamX; x++) {
+                if (qtd_pecas < 10) {
+                    if (Tabuleiro[y][x] == 1) {
+                        int conta_peca = this.verifica_Possibilidade_Manual(Tabuleiro, x, y);
+
+                        if (conta_peca == 0 && qtd_pecas == 1) {
+                            JOptionPane.showMessageDialog(null, "Você ganhou!");
+                            return true;
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Você perdeu!");
+                            return true;
+                        }
+                    }
+                }
+            }
+        }*/
+        return false;
+    }
+
+    public int verifica_Possibilidade_Manual(int[][] Tabuleiro, int posX, int posY) {
         int cont_pos = 0; // Contar as Possíves jogadas.
         String Str = null;
 
@@ -111,10 +143,10 @@ public class Painel extends javax.swing.JFrame {
         int segundo_proximo_direita = posX + 2;
         int X_Atual = 1000;
         int Y_Atual = 1000;
-        int X_Meio =  1000;
-        int Y_Meio =  1000;
-        int X_Novo =  1000;
-        int Y_Novo =  1000;
+        int X_Meio = 1000;
+        int Y_Meio = 1000;
+        int X_Novo = 1000;
+        int Y_Novo = 1000;
 
         try {
             if (tabuleiro[posX][posY] == 1 && tabuleiro[posX][proximo_cima] == 1 && tabuleiro[posX][segundo_proximo_cima] == 0) {
@@ -127,7 +159,9 @@ public class Painel extends javax.swing.JFrame {
                 X_Novo = posX;
                 Y_Novo = segundo_proximo_cima;
                 cont_pos++;
-            } } catch (Exception e) {}
+            }
+        } catch (Exception e) {
+        }
         try {
             if (tabuleiro[posX][posY] == 1 && tabuleiro[posX][proximo_baixo] == 1 && tabuleiro[posX][segundo_proximo_baixo] == 0) {
                 Str = "Para BAIXO";
@@ -140,7 +174,9 @@ public class Painel extends javax.swing.JFrame {
                 Y_Novo = segundo_proximo_baixo;
 
                 cont_pos++;
-            }} catch (Exception e) { }
+            }
+        } catch (Exception e) {
+        }
         try {
             if (tabuleiro[posX][posY] == 1 && tabuleiro[proximo_esquerda][posY] == 1 && tabuleiro[segundo_proximo_esquerda][posY] == 0) {
                 Str = "Para ESQUERDA";
@@ -154,7 +190,8 @@ public class Painel extends javax.swing.JFrame {
 
                 cont_pos++;
             }
-        } catch (Exception e) { }
+        } catch (Exception e) {
+        }
         try {
             if (tabuleiro[posX][posY] == 1 && tabuleiro[proximo_direita][posY] == 1 && tabuleiro[segundo_proximo_direita][posY] == 0) {
                 Str = "Para DIREITA";
@@ -166,25 +203,44 @@ public class Painel extends javax.swing.JFrame {
                 X_Novo = segundo_proximo_direita;
                 Y_Novo = posY;
                 cont_pos++;
-            }} catch (Exception e) { }
+            }
+        } catch (Exception e) {
+        }
         if (cont_pos == 1) {
-            System.out.println("Jogou"+Str+" ! Atual= "+X_Atual+","+Y_Atual+" Meio= "+X_Meio+","+Y_Meio+" Novo= "+X_Novo+","+Y_Novo);
+            System.out.println("Jogou" + Str + " ! Atual= " + X_Atual + "," + Y_Atual + " Meio= " + X_Meio + "," + Y_Meio + " Novo= " + X_Novo + "," + Y_Novo);
             this.Joga_Peca_Manual(X_Atual, Y_Atual, X_Meio, Y_Meio, X_Novo, Y_Novo);
 
-        } if(cont_pos > 1){
-            JOptionPane.showConfirmDialog(jMenu2, "Selecione qual peça é para jogar! AO CLICAR SIM IRÁ PARA O ULTIMO IF");
-            
-            this.Joga_Peca_Manual(X_Atual, Y_Atual, X_Meio, Y_Meio, X_Novo, Y_Novo);
         }
-        else {
-            System.out.println("Contador de peças: "+cont_pos);
+        if (cont_pos > 1) {
+            JOptionPane.showConfirmDialog(jMenu2, "Selecione qual peça é para jogar! AO CLICAR SIM IRÁ PARA O ULTIMO IF");
+
+            this.Joga_Peca_Manual(X_Atual, Y_Atual, X_Meio, Y_Meio, X_Novo, Y_Novo);
+        } else {
+            System.out.println("Contador de peças: " + cont_pos);
             System.out.println(Str);
         }
         this.MostraMatriz();
         this.AtualizaMatriz();
-        return Str;
+        this.Verifica_se_terminou(tabuleiro, TamY, TamX);
+        return cont_pos;
     }
 
+    /**
+     * 
+     * @param tab_atual
+     * @param jog_passadas
+     * @return 
+     * Método para identificar as possíbilidades e realizar as jogadas automaticamente.
+     * 
+     */
+
+
+    public boolean verifica_Possibilidade_Automatica(int[][] tab_atual, ArrayList<Jogada> jog_passadas) {
+        
+        
+        
+        return true;
+    }
     public void AtualizaMatriz() {
 
         // 2X0 ------------------
@@ -871,7 +927,7 @@ public class Painel extends javax.swing.JFrame {
     private void JogarManualmenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JogarManualmenteActionPerformed
         tabuleiro[3][3] = 0;
         this.AtualizaMatriz();
-        JogarManualmente.setEnabled( false );
+        JogarManualmente.setEnabled(false);
     }//GEN-LAST:event_JogarManualmenteActionPerformed
 
     private void jB4x1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jB4x1ActionPerformed
@@ -946,10 +1002,10 @@ public class Painel extends javax.swing.JFrame {
 
             // Setando campo como zero
             tabuleiro[posx1][posy1] = 0;
-            IniciarJogo.setEnabled( false );
-            
+            IniciarJogo.setEnabled(false);
+
             this.AtualizaMatriz();
-            
+
             System.out.println("----------------MATRIZ INICIAL-------------------------");
             this.MostraMatriz();
 
