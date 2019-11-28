@@ -231,7 +231,7 @@ public class Painel extends javax.swing.JFrame {
      * @param jog_passadas
      * @return 
      * Método para identificar as possíbilidades e realizar as jogadas automaticamente.
-     * 
+     * .
      */
 
 
