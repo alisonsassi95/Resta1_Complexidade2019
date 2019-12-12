@@ -6,7 +6,10 @@
 package trabalhocomplexidade_resta1;
 
 import java.awt.Color;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
@@ -60,6 +63,54 @@ public class Painel extends javax.swing.JFrame {
     }
 
     /**
+     * Metodo para verificar se terminou.
+     *
+     * @return True ou false.
+     */
+
+    public boolean TerminouCom1() {
+        int count = 0;
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 6; j++) {
+                if (tabuleiro[i][j] == 1) {
+                    count = count + 1;
+                    if (count > 1) {
+                        return false;
+                    }
+                }
+            }
+        }
+        if (count == 1) {
+            return true;
+        }
+        return true;
+    }
+
+    /**
+     * Metodo que verifica se terminou sem jogadas possíveis.
+     *
+     * @return
+     */
+    public boolean TerminouSemjogadas() {
+        int count = 0;
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 6; j++) {
+                if (tabuleiro[i][j] == 0) {
+
+                    count = count + 1;
+                    if (count > 1) {
+                        return false;
+                    }
+                }
+            }
+        }
+        if (count == 1) {
+            return true;
+        }
+        return true;
+    }
+
+    /**
      *
      * @return Retorna a quantidades de Zeros que tem na Matriz
      */
@@ -73,6 +124,108 @@ public class Painel extends javax.swing.JFrame {
             }
         }
         return qtd;
+    }
+
+    /**
+     *
+     * @return Retorna quantas possibilidades de jogadas
+     */
+    public int Qtdjogadas(int[][] Tabuleiro, int TamY, int TamX) {
+        int qtdJogadas = 0;
+        for (int y = 0; y < TamY; y++) {
+            for (int x = 0; x < TamX; x++) {
+                // Encontrou um Zero
+                if (Tabuleiro[y][x] == 0) {
+                    try {
+                        if (tabuleiro[x][y - 1] == 1 && tabuleiro[x][y - 2] == 1) {
+                            qtdJogadas++;
+                        }
+                    } catch (Exception e) {
+                    }
+                    try {
+                        if (tabuleiro[x][y + 1] == 1 && tabuleiro[x][y + 2] == 1) {
+                            qtdJogadas++;
+                        }
+                    } catch (Exception e) {
+                    }
+                    try {
+                        if (tabuleiro[x - 1][y] == 1 && tabuleiro[x - 2][y] == 1) {
+                            qtdJogadas++;
+                        }
+                    } catch (Exception e) {
+                    }
+                    try {
+                        if (tabuleiro[x + 1][y] == 1 && tabuleiro[x + 2][y] == 1) {
+                            qtdJogadas++;
+                        }
+                    } catch (Exception e) {
+                    }
+                }
+            }
+        }
+        return qtdJogadas;
+    }
+
+    /**
+     *
+     * @return Retorna quantas possibilidades de jogadas
+     */
+    public void Jogando(int[][] Tabuleiro, int TamY, int TamX) {
+
+        for (int y = 0; y < TamY; y++) {
+            for (int x = 0; x < TamX; x++) {
+                // Encontrou um Zero
+                if (Tabuleiro[y][x] == 0) {
+                    try {
+                        if (tabuleiro[x][y - 1] == 1 && tabuleiro[x][y - 2] == 1) {
+                            this.verifica_Possibilidade_Manual(tabuleiro, x, (y - 2));
+
+                            // Joga de cima para baixo
+                            String CimapBaixo = (" Jogou de cima para baixo: X " + x + " e Y: " + (y - 2) + "");
+                            System.out.println(CimapBaixo);
+                        }
+                    } catch (Exception e) {
+
+                    }
+                    try {
+                        if (tabuleiro[x][y + 1] == 1 && tabuleiro[x][y + 2] == 1) {
+                            this.verifica_Possibilidade_Manual(tabuleiro, x, (y + 2));
+                            // Joga de baixo para cima
+                            String BaixopCima = (" Jogou de Baixo p/ Cima X " + x + " e Y: " + (y + 2) + "");
+                            System.out.println(BaixopCima);
+
+                        }
+                    } catch (Exception e) {
+
+                    }
+                    try {
+                        if (tabuleiro[x - 1][y] == 1 && tabuleiro[x - 2][y] == 1) {
+                            this.verifica_Possibilidade_Manual(tabuleiro, (x - 2), y);
+                            // Joga da direita para esquerda
+                            String DiretapEsquerda = ("Jogou da Direta p Esquerda X " + (x - 2) + " e Y: " + (y) + "");
+                            System.out.println(DiretapEsquerda);
+                           
+
+                        }
+                    } catch (Exception e) {
+
+                    }
+                    try {
+                        if (tabuleiro[x + 1][y] == 1 && tabuleiro[x + 2][y] == 1) {
+                            this.verifica_Possibilidade_Manual(tabuleiro, (x + 2), y);
+                            // Joga da esquerda para direta
+                            String EsquerdapDireita = (" Jogou da Esquerda p Direita X " + (x + 2) + " e Y: " + (y - 2) + "");
+                            System.out.println(EsquerdapDireita);
+                          
+
+                        }
+                    } catch (Exception e) {
+
+                    }
+
+                }
+            }
+        }
     }
 
     /**
@@ -100,33 +253,20 @@ public class Painel extends javax.swing.JFrame {
 
     }
 
-    /**
-     *
-     * @return Retorna a quantidades de 1 que tem na Matriz
-     */
-    public boolean Verifica_se_terminou(int[][] Tabuleiro, int TamY, int TamX) {
-       // Esse método está muito lento!!!
-        
-        /*int qtd_pecas = this.QuantidadeDePeças(Tabuleiro, TamY, TamX);
-
-        for (int y = 0; y < TamY; y++) {
-            for (int x = 0; x < TamX; x++) {
-                if (qtd_pecas < 10) {
-                    if (Tabuleiro[y][x] == 1) {
-                        int conta_peca = this.verifica_Possibilidade_Manual(Tabuleiro, x, y);
-
-                        if (conta_peca == 0 && qtd_pecas == 1) {
-                            JOptionPane.showMessageDialog(null, "Você ganhou!");
-                            return true;
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Você perdeu!");
-                            return true;
-                        }
+    public boolean Verifica_se_terminou(int x, int y) {
+        for (int i = 0; i <= 6; i++) {
+            for (int j = 0; j <= 6; j++) {
+                if (i == x && j == y) {
+                    if (tabuleiro[x][y] != 1) {
+                        return false;
                     }
+                } else if (tabuleiro[x][y] == 1) {
+                    return false;
                 }
             }
-        }*/
-        return false;
+        }
+        return true;
+
     }
 
     public int verifica_Possibilidade_Manual(int[][] Tabuleiro, int posX, int posY) {
@@ -161,6 +301,7 @@ public class Painel extends javax.swing.JFrame {
                 cont_pos++;
             }
         } catch (Exception e) {
+             System.out.println("Acacou em cima");
         }
         try {
             if (tabuleiro[posX][posY] == 1 && tabuleiro[posX][proximo_baixo] == 1 && tabuleiro[posX][segundo_proximo_baixo] == 0) {
@@ -176,6 +317,7 @@ public class Painel extends javax.swing.JFrame {
                 cont_pos++;
             }
         } catch (Exception e) {
+             System.out.println("Acacou em Baixo");
         }
         try {
             if (tabuleiro[posX][posY] == 1 && tabuleiro[proximo_esquerda][posY] == 1 && tabuleiro[segundo_proximo_esquerda][posY] == 0) {
@@ -191,6 +333,7 @@ public class Painel extends javax.swing.JFrame {
                 cont_pos++;
             }
         } catch (Exception e) {
+            System.out.println("Acacou em Esquerda");
         }
         try {
             if (tabuleiro[posX][posY] == 1 && tabuleiro[proximo_direita][posY] == 1 && tabuleiro[segundo_proximo_direita][posY] == 0) {
@@ -205,6 +348,7 @@ public class Painel extends javax.swing.JFrame {
                 cont_pos++;
             }
         } catch (Exception e) {
+             System.out.println("Acacou em Direita");
         }
         if (cont_pos == 1) {
             System.out.println("Jogou" + Str + " ! Atual= " + X_Atual + "," + Y_Atual + " Meio= " + X_Meio + "," + Y_Meio + " Novo= " + X_Novo + "," + Y_Novo);
@@ -212,8 +356,10 @@ public class Painel extends javax.swing.JFrame {
 
         }
         if (cont_pos > 1) {
-            JOptionPane.showConfirmDialog(jMenu2, "Selecione qual peça é para jogar! AO CLICAR SIM IRÁ PARA O ULTIMO IF");
-
+            JOptionPane.showMessageDialog(rootPane, "Posição Atual: X" + X_Atual + " Y:" + Y_Atual + " \n Escolha Uma Opção:");
+            // Retornar quais posiçoes tem disponíveis
+            // Colocar as opções em vermelhos setar na matriz número 2
+            // Pedir para o Usuário Clicar nos botoes vermelhos
             this.Joga_Peca_Manual(X_Atual, Y_Atual, X_Meio, Y_Meio, X_Novo, Y_Novo);
         } else {
             System.out.println("Contador de peças: " + cont_pos);
@@ -221,26 +367,12 @@ public class Painel extends javax.swing.JFrame {
         }
         this.MostraMatriz();
         this.AtualizaMatriz();
-        this.Verifica_se_terminou(tabuleiro, TamY, TamX);
+        int PosFinalX = Integer.parseInt(JPosFinalX.getText());
+        int PosFinalY = Integer.parseInt(JPosFinalY.getText());
+        this.Verifica_se_terminou(PosFinalX, PosFinalY);
         return cont_pos;
     }
 
-    /**
-     * 
-     * @param tab_atual
-     * @param jog_passadas
-     * @return 
-     * Método para identificar as possíbilidades e realizar as jogadas automaticamente.
-     * .
-     */
-
-
-    public boolean verifica_Possibilidade_Automatica(int[][] tab_atual, ArrayList<Jogada> jog_passadas) {
-        
-        
-        
-        return true;
-    }
     public void AtualizaMatriz() {
 
         // 2X0 ------------------
@@ -846,7 +978,7 @@ public class Painel extends javax.swing.JFrame {
                                 .addGap(22, 22, 22)
                                 .addComponent(Pain_Esq, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(212, 212, 212)
+                                .addGap(238, 238, 238)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(Pain_Centro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(Pain_Cima, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -872,7 +1004,7 @@ public class Painel extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGap(6, 6, 6)
                                 .addComponent(Pain_Direito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 12, Short.MAX_VALUE))))
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -969,11 +1101,11 @@ public class Painel extends javax.swing.JFrame {
             int posy2 = Integer.parseInt(JPosFinalY.getText()); //LER POSI. x INICIAL
             int posx2 = Integer.parseInt(JPosFinalX.getText()); //LER POSI. x INICIAL
 
-            if (posy1 > TamY || posy1 < 0) {
+            if (posy1 >= TamY || posy1 < 0) {
                 JOptionPane.showMessageDialog(null, "Valor de Y INICIAL fora da Matriz, Tente Novamente!", "Aviso!", JOptionPane.INFORMATION_MESSAGE);
                 passa = 0;
                 break;
-            } else if (posx1 > TamX || posx1 < 0) {
+            } else if (posx1 >= TamX || posx1 < 0) {
                 JOptionPane.showMessageDialog(null, "Valor de X INICIAL fora da Matriz, Tente Novamente!", "Aviso!", JOptionPane.INFORMATION_MESSAGE);
                 passa = 0;
                 break;
@@ -981,11 +1113,11 @@ public class Painel extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Posição INICIAL informada é inválida!", "Aviso!", JOptionPane.INFORMATION_MESSAGE);
                 passa = 0;
                 break;
-            } else if (posy2 > TamY || posy2 < 0) {
+            } else if (posy2 >= TamY || posy2 < 0) {
                 JOptionPane.showMessageDialog(null, "Valor de Y FINAL fora da Matriz, Tente Novamente!", "Aviso!", JOptionPane.INFORMATION_MESSAGE);
                 passa = 0;
                 break;
-            } else if (posx2 > TamX || posx2 < 0) {
+            } else if (posx2 >= TamX || posx2 < 0) {
                 JOptionPane.showMessageDialog(null, "Valor de X FINAL fora da Matriz, Tente Novamente!", "Aviso!", JOptionPane.INFORMATION_MESSAGE);
                 passa = 0;
                 continue;
@@ -1002,13 +1134,34 @@ public class Painel extends javax.swing.JFrame {
 
             // Setando campo como zero
             tabuleiro[posx1][posy1] = 0;
-            IniciarJogo.setEnabled(false);
-
+            //IniciarJogo.setEnabled(false);
+            int numpecas = QuantidadeDePeças(tabuleiro, TamX, TamY);
+            // while (numpecas > 1) {
             this.AtualizaMatriz();
 
             System.out.println("----------------MATRIZ INICIAL-------------------------");
             this.MostraMatriz();
 
+            int max = Qtdjogadas(tabuleiro, TamX, TamY);
+            ArrayList<Integer> numeros = new ArrayList<Integer>();
+            for (int i = 1; i <= max; i++) {
+                numeros.add(i);
+            }
+            //int rand = new Random().nextInt(numeros.size());
+            //System.out.println("Numero de Peças: " + numpecas);
+
+            //Jogando(tabuleiro, TamY, TamX, rand);
+            while (numpecas > 1){
+            boolean acabou = TerminouCom1();
+             boolean acabou2 = TerminouSemjogadas();
+            Jogando(tabuleiro, TamY, TamX);
+             System.out.println("------------------------------------------");
+            this.MostraMatriz();
+            numpecas = QuantidadeDePeças(tabuleiro, TamX, TamY);
+            }
+           
+            
+            // }
         } // Fim posições INICIAL
 
 
